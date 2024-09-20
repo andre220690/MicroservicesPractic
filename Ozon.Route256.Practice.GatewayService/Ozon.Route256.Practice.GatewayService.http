@@ -1,0 +1,6 @@
+@Ozon.Route256.Practice.GatewayService_HostAddress = http://localhost:8080
+
+GET {{Ozon.Route256.Practice.GatewayService_HostAddress}}/SetOrderCancell?orderNumber=1
+Accept: application/json
+
+###

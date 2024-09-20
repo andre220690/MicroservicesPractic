@@ -1,0 +1,116 @@
+﻿syntax = "proto3";
+option csharp_namespace = "Ozon.Route256.Practice";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service Orders
+{
+	rpc SetOrderCancell(SetOrderCancellRequest) returns (SetOrderCancellResponse);
+	rpc GetOrderStatus(GetOrderStatusRequest) returns (GetOrderStatusResponse);
+	rpc GetRegions(google.protobuf.Empty) returns (GetRegionsResponse);
+	rpc GetOrders(GetOrdersRequest) returns (GetOrdersResponse);
+	rpc GetOrdersAgrigater(GetOrdersAgrigaterRequest) returns (GetOrdersAgrigaterResponse);
+	rpc GetOrdersByClient(GetOrdersByClientRequest) returns (GetOrdersResponse);
+}
+
+message SetOrderCancellRequest
+{
+	int64 number = 1;
+}
+
+message SetOrderCancellResponse
+{
+	bool isSuccessful = 1;
+	string information = 2;
+}
+
+message GetOrderStatusRequest
+{
+	int64 number = 1;
+}
+
+message GetOrderStatusResponse
+{
+	OrderState orderState = 1;
+}
+
+message GetRegionsResponse
+{
+	repeated string regions = 1;
+}
+
+message GetOrdersRequest
+{
+	repeated string regions = 1;
+	OrderState orderState = 2;
+	int32 pagination = 3;
+	TypeSorted typeSorted = 4;
+	FieldSorted fieldSorted = 5;
+
+	enum TypeSorted
+	{
+		NoneState = 0;
+		ASC = 1;
+		DESC = 2;
+	}
+
+	enum FieldSorted
+	{
+		NoneField = 0;
+		Region = 1;
+	}
+}
+
+message GetOrdersResponse
+{
+	repeated Order order = 1;
+}
+
+message Order
+{
+	int64 id = 1;
+	int32 countProducts = 2;
+	double totalAmount = 3;
+	double totalWeight = 4;
+	int32 orderType = 5;
+	google.protobuf.Timestamp orderDate = 6;
+	string fromRegion = 7;
+	OrderState orderState = 8;
+	string customerName = 9;
+	string adress = 10;
+	string phoneNumber = 11;
+}
+
+message GetOrdersAgrigaterRequest
+{
+	google.protobuf.Timestamp startDate = 1;
+	repeated string regions = 2;
+}
+
+message GetOrdersAgrigaterResponse
+{
+	repeated OrderAgrigater orderAgrigater = 1;
+}
+
+message OrderAgrigater
+{
+	string region = 1;
+	int32 orederAmount = 2;
+}
+
+message GetOrdersByClientRequest
+{
+	int32 clientId = 1;
+	google.protobuf.Timestamp startDate = 2;
+	int32 pagination = 3;
+}
+
+enum OrderState
+{
+	NoneState = 0;
+	Created = 1;
+	SentToCustomer = 2;
+	Delivered = 3;
+	Lost = 4;
+	Cancelled = 5;
+}
