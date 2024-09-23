@@ -1,13 +1,12 @@
-﻿using Ozon.Route256.Practice.GatewayService.Models;
-using Ozon.Route256.Practice.LogisticsSimulator.Grpc;
-using Ozon.Route256.Practice.OrdersService.Infrastructure.Redis;
+﻿using Ozon.Route256.Practice.LogisticsSimulator.Grpc;
+using Ozon.Route256.Practice.OrdersService.Models;
 using Ozon.Route256.Practice.OrdersService.Repository.Interfaces;
 using StackExchange.Redis;
 using System.Text.Json;
 
-namespace Ozon.Route256.Practice.OrdersService.Repository;
+namespace Ozon.Route256.Practice.OrdersService.Infrastructure.Redis;
 
-public class RedisCustomerRepository : ICustomerRepository
+public class RedisCustomerRepository : IRedisCustomerRepository
 {
     private readonly IDatabase _redisDatabase;
     private readonly IServer _redisServer;

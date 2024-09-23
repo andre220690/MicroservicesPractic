@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Confluent.Kafka" Version="2.5.3" />
     <PackageReference Include="Faker.Net" Version="2.0.163" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.65.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.65.0" />

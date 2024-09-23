@@ -2,7 +2,7 @@ using Grpc.Core;
 using Ozon.Route256.Practice.OrdersService.ClientBalancing;
 using Ozon.Route256.Practice.OrdersService.ClientBalancing.Interfaces;
 
-namespace Ozon.Route256.Practice.CustomerService.ClientBalancing;
+namespace Ozon.Route256.Practice.OrdersService.ClientBalancing;
 
 public sealed class SdConsumerHostedService : BackgroundService
 {

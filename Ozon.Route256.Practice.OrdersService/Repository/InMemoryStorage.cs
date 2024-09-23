@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using Ozon.Route256.Practice.OrdersService.Models;
 
-namespace Ozon.Route256.Practice.OrdersService.Repository.Models;
+namespace Ozon.Route256.Practice.OrdersService.Repository;
 
 public class InMemoryStorage
 {
@@ -16,7 +16,7 @@ public class InMemoryStorage
     {
         var regions = new[] { "Moscow", "StPetersburg", "Novosibirsk" };
 
-        var orders = Enumerable.Range(1, 10000)
+        var orders = Enumerable.Range(1, 1000)
                 .Select(r => new OrderDto(
                     r,
                     Faker.RandomNumber.Next(1, 10),
@@ -32,7 +32,7 @@ public class InMemoryStorage
                     Faker.Phone.Number()
             ));
 
-        foreach(var order in orders)
+        foreach (var order in orders)
         {
             Orders[order.id] = order;
         }

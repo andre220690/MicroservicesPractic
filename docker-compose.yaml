@@ -15,6 +15,8 @@ services:
     container_name: gateway-service
     ports:
       - "777:8080"
+    environment:
+      "ROUTE256_CUSTOMER_ADDRESS": "http://localhost:5081"
 
   orders-service-1:
     build:
@@ -141,9 +143,24 @@ services:
       ZOOKEEPER_INIT_LIMIT: '10'
       ZOOKEEPER_SYNC_LIMIT: '5'
       ZOOKEEPER_MAX_CLIENT_CONNS: '5'
-  
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - 8090:8080
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker-1:9091,broker-2:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    links:
+      - broker-1
+      - broker-2
+      - zookeeper
+
   broker-1:
-    image: confluentinc/cp-kafka:7.3.2
+    image: confluentinc/cp-kafka:latest
     container_name: broker-1
     depends_on:
       - zookeeper
@@ -153,14 +170,14 @@ services:
       KAFKA_BROKER_ID: '1'
       KAFKA_BROKER_RACK: '1'
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENERS: 'LISTENER_INTERNAL://:9091,LISTENER_LOCAL://:29091'
       KAFKA_ADVERTISED_LISTENERS: 'LISTENER_INTERNAL://broker-1:9091,LISTENER_LOCAL://localhost:29091'
       KAFKA_INTER_BROKER_LISTENER_NAME: 'LISTENER_INTERNAL'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'LISTENER_INTERNAL:PLAINTEXT,LISTENER_LOCAL:PLAINTEXT'
-      KAFKA_DEFAULT_REPLICATION_FACTOR: '2'
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
   
   broker-2:
-    image: confluentinc/cp-kafka:7.3.2
+    image: confluentinc/cp-kafka:latest
     container_name: broker-2
     depends_on:
       - zookeeper
@@ -170,16 +187,24 @@ services:
       KAFKA_BROKER_ID: '2'
       KAFKA_BROKER_RACK: '2'
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENERS: 'LISTENER_INTERNAL://:9091,LISTENER_LOCAL://:29092'
-      KAFKA_ADVERTISED_LISTENERS: 'LISTENER_INTERNAL://broker-2:9091,LISTENER_LOCAL://localhost:29092'
+      KAFKA_ADVERTISED_LISTENERS: 'LISTENER_INTERNAL://broker-2:9092,LISTENER_LOCAL://localhost:29092'
       KAFKA_INTER_BROKER_LISTENER_NAME: 'LISTENER_INTERNAL'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'LISTENER_INTERNAL:PLAINTEXT,LISTENER_LOCAL:PLAINTEXT'
-      KAFKA_DEFAULT_REPLICATION_FACTOR: '2'
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   redis_orders:
     image: redis:latest
     container_name: redis-orders
-    command: redis-server --save 60 - --loglevel warning
+    command: redis-server --save 60 1 --loglevel warning
     restart: always
     ports:
       - 6380:6379
+
+  redis_logistic:
+    image: redis:latest
+    container_name: redis-logistic
+    command: redis-server --save 60 1 --loglevel warning
+    restart: always
+    ports:
+      - 6379:6379

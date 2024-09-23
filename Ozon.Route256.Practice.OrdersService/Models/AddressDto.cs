@@ -1,4 +1,4 @@
-﻿namespace Ozon.Route256.Practice.GatewayService.Models;
+﻿namespace Ozon.Route256.Practice.OrdersService.Models;
 
 public record AddressDto(
     string region,
