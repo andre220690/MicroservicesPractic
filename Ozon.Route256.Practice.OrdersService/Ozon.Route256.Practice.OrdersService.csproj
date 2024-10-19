@@ -11,10 +11,13 @@
   <ItemGroup>
     <PackageReference Include="Confluent.Kafka" Version="2.5.3" />
     <PackageReference Include="Faker.Net" Version="2.0.163" />
+    <PackageReference Include="FluentMigrator.Runner.Postgres" Version="6.0.0" />
+    <PackageReference Include="FluentMigrator.Runner" Version="6.0.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.65.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.65.0" />
     <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.8.8" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+    <PackageReference Include="Npgsql" Version="8.0.4" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>

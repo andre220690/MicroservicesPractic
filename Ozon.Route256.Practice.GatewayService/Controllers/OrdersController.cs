@@ -45,7 +45,7 @@ public class OrdersController : ControllerBase
         request.OrderState = requestDto.OrderState;
         request.FieldSorted = (GetOrdersRequest.Types.FieldSorted)requestDto.FieldSorted;
         request.Pagination = requestDto.Pagination;
-        request.TypeSorted = (GetOrdersRequest.Types.TypeSorted)requestDto.TypeSorted;        
+        request.TypeSorted = (GetOrdersRequest.Types.TypeSorted)requestDto.TypeSorted;
 
         var result = await _ordersClient.GetOrdersAsync(request); // TODO: проверить
 

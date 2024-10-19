@@ -1,11 +1,7 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Options;
-using Ozon.Route256.Practice.OrdersService.Infrastructure.Kafka.Producer;
 using Ozon.Route256.Practice.OrdersService.Models.PreOrders;
-using System.Collections;
-using System.Text;
 using System.Text.Json;
-using static Confluent.Kafka.ConfigPropertyNames;
 
 namespace Ozon.Route256.Practice.OrdersService.Infrastructure.Kafka.Consumer.PreOrder;
 
@@ -73,9 +69,10 @@ public class PreOrderConsumer : BackgroundService
 
     private async Task Handle(ConsumeResult<string, string> consumeResult, CancellationToken stoppingToken)
     {
+        if (consumeResult is null)
+            return;
+
         var preOrder = JsonSerializer.Deserialize<OrderModel>(consumeResult.Message.Value, new JsonSerializerOptions());
-
-
 
         Console.WriteLine($"{consumeResult.Topic} get message with KEY {preOrder.Id}");
 

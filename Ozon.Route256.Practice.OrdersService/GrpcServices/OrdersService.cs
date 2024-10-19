@@ -1,10 +1,10 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Ozon.Route256.Practice.LogisticsSimulator.Grpc;
+using Ozon.Route256.Practice.OrdersService.Dal.Repository.Interfaces;
 using Ozon.Route256.Practice.OrdersService.Exceptions;
 using Ozon.Route256.Practice.OrdersService.Models;
-using Ozon.Route256.Practice.OrdersService.Repository.Interfaces;
-using Ozon.Route256.Practice.OrdersService.Repository.Models.Filter;
+using Ozon.Route256.Practice.OrdersService.Models.Filter;
 
 namespace Ozon.Route256.Practice.OrdersService.GrpcServices;
 
@@ -13,12 +13,16 @@ public sealed class OrdersService : Orders.OrdersBase
     private readonly ILogger<OrdersService> _logger;
     private readonly LogisticsSimulatorService.LogisticsSimulatorServiceClient _logisticsSimulatorServiceClient;
     private readonly IOrderRepository _orderRepositiry;
+    private readonly IAddressRepository _addressRepository;
 
     public OrdersService(ILogger<OrdersService> logger,
         IOrderRepository orderRepositiry,
+        IAddressRepository addressRepository,
         LogisticsSimulatorService.LogisticsSimulatorServiceClient logisticsSimulatorServiceClient)
     {
         _orderRepositiry = orderRepositiry;
+        _addressRepository = addressRepository;
+
         _logisticsSimulatorServiceClient = logisticsSimulatorServiceClient;
         _logger = logger;
     }
@@ -32,7 +36,7 @@ public sealed class OrdersService : Orders.OrdersBase
             throw new NotFoundException($"Order {request.Number} not found");
         }
 
-        if (order.orderState == OrderStateEnum.SentToCustomer)
+        if (order.orderState == (int)OrderStateEnum.SentToCustomer)
         {
             return new SetOrderCancellResponse { Information = $"Order {request.Number} has final status", IsSuccessful = false };
         }
@@ -56,13 +60,13 @@ public sealed class OrdersService : Orders.OrdersBase
             throw new NotFoundException($"Order {request.Number} not found");
         }
 
-        return new GetOrderStatusResponse { OrderState = (OrderState) order.orderState };
+        return new GetOrderStatusResponse { OrderState = (OrderState)order.orderState };
 
     }
 
     public override async Task<GetRegionsResponse> GetRegions(Empty empty, ServerCallContext context)
     {
-        var regions = await _orderRepositiry.GetRegions(new CancellationToken());
+        var regions = await _addressRepository.GetRegions(new CancellationToken());
 
         return new GetRegionsResponse { Regions = { regions } };
     }
@@ -78,7 +82,9 @@ public sealed class OrdersService : Orders.OrdersBase
             (FieldSorted)request.FieldSorted
         );
 
-        var orders = await _orderRepositiry.GetOrdersByFilter(filter, new CancellationToken());        
+        var ordersDb = await _orderRepositiry.GetOrdersByFilter(filter, new CancellationToken());
+
+        var orders = new List<OrderDto>(); // TODO: реализовать перевод из бд модели в дто
 
         var result = OrderDtoConverToOrder(orders);
 
@@ -100,7 +106,9 @@ public sealed class OrdersService : Orders.OrdersBase
 
     public override async Task<GetOrdersResponse> GetOrdersByClient(GetOrdersByClientRequest request, ServerCallContext context)
     {
-        var orders = await _orderRepositiry.GetOrdersByClient(request.ClientId, request.StartDate.ToDateTime(), request.Pagination, new CancellationToken());
+        var ordersDb = await _orderRepositiry.GetOrdersByClient(request.ClientId, request.StartDate.ToDateTime(), request.Pagination, new CancellationToken());
+
+        var orders = new List<OrderDto>(); // TODO: реализовать перевод из бд модели в дто
 
         return new GetOrdersResponse
         {

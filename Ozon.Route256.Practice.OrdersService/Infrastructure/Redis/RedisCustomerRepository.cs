@@ -1,6 +1,4 @@
-﻿using Ozon.Route256.Practice.LogisticsSimulator.Grpc;
-using Ozon.Route256.Practice.OrdersService.Models;
-using Ozon.Route256.Practice.OrdersService.Repository.Interfaces;
+﻿using Ozon.Route256.Practice.OrdersService.Models;
 using StackExchange.Redis;
 using System.Text.Json;
 

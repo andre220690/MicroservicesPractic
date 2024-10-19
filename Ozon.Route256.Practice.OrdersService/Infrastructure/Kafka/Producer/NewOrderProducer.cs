@@ -1,6 +1,5 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Options;
-using Ozon.Route256.Practice.OrdersService.Models;
 using Ozon.Route256.Practice.OrdersService.Models.PreOrders;
 using System.Text.Json;
 

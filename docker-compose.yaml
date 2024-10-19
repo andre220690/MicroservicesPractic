@@ -32,6 +32,7 @@ services:
       "ROUTE256_REDIS": "http://localhost:6380"
       "ROUTE256_GRPC_PORT": "5001"
       "ROUTE256_HTTP_PORT": "5002"
+      "ORDERS-DB" : "Server=localhost;Port=5401;Database=orders-service;User ID=test;Password=test"
 
   orders-service-2:
     build:
@@ -47,6 +48,8 @@ services:
       "ROUTE256_REDIS": "http://localhost:6380"
       "ROUTE256_GRPC_PORT": "5001"
       "ROUTE256_HTTP_PORT": "5002"
+      "ORDERS-DB" : "Server=localhost;Port=5401;Database=orders-service;User ID=test;Password=test"
+
 
   orders-service-db:
     image: postgres:latest
@@ -62,7 +65,7 @@ services:
 
   customer-service:
     build:
-      context: ./../../ozonGitHub/homework-4/src/Ozon.Route256.Practice.CustomerService
+      context: ./../../ozonGitHub/homework-5/src/Ozon.Route256.Practice.CustomerService
       dockerfile: Dockerfile
     container_name: customer-service
     ports:
@@ -86,7 +89,7 @@ services:
 
   logistic-simulator:
     build:
-      context: ./../../ozonGitHub/homework-4/src/Ozon.Route256.Practice.LogisticsSimulator
+      context: ./../../ozonGitHub/homework-5/src/Ozon.Route256.Practice.LogisticsSimulator
       dockerfile: Dockerfile
     container_name: logistic-simulator
     ports:
@@ -94,7 +97,7 @@ services:
 
   orders-generator-web:
     build:
-      context: ./../../ozonGitHub/homework-4/src/Ozon.Route256.Practice.OrdersGenerator
+      context: ./../../ozonGitHub/homework-5/src/Ozon.Route256.Practice.OrdersGenerator
       dockerfile: Dockerfile
     container_name: orders-generator-web
     environment:
@@ -102,7 +105,7 @@ services:
 
   orders-generator-mobile:
     build:
-      context: ./../../ozonGitHub/homework-4/src/Ozon.Route256.Practice.OrdersGenerator
+      context: ./../../ozonGitHub/homework-5/src/Ozon.Route256.Practice.OrdersGenerator
       dockerfile: Dockerfile
     container_name: orders-generator-mobile
     environment:
@@ -112,7 +115,7 @@ services:
 
   orders-generator-api:
     build:
-      context: ./../../ozonGitHub/homework-4/src/Ozon.Route256.Practice.OrdersGenerator
+      context: ./../../ozonGitHub/homework-5/src/Ozon.Route256.Practice.OrdersGenerator
       dockerfile: Dockerfile
     container_name: orders-generator-api
     environment:
@@ -120,7 +123,7 @@ services:
 
   service-discovery:
     build:
-      context: ./../../ozonGitHub/homework-4/src/Ozon.Route256.Practice.ServiceDiscovery
+      context: ./../../ozonGitHub/homework-5/src/Ozon.Route256.Practice.ServiceDiscovery
       dockerfile: Dockerfile
     ports:
       - "6081:80"

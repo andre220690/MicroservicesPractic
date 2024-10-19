@@ -1,6 +1,5 @@
 ﻿using Ozon.Route256.Practice.OrdersService.Infrastructure.Redis;
 using Ozon.Route256.Practice.OrdersService.Models;
-using Ozon.Route256.Practice.OrdersService.Repository.Interfaces;
 
 namespace Ozon.Route256.Practice.OrdersService.Services;
 

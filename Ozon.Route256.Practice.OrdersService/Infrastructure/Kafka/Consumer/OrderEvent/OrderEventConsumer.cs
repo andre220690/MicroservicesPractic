@@ -1,8 +1,5 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Options;
-using Ozon.Route256.Practice.OrdersService.Infrastructure.Kafka.Consumer.PreOrder;
-using Ozon.Route256.Practice.OrdersService.Infrastructure.Kafka.Producer;
-using Ozon.Route256.Practice.OrdersService.Models.PreOrders;
 using System.Text.Json;
 
 namespace Ozon.Route256.Practice.OrdersService.Infrastructure.Kafka.Consumer.OrderEvent;

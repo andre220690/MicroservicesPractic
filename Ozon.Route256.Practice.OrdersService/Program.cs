@@ -1,19 +1,13 @@
+using FluentMigrator.Runner;
+using FluentMigrator.Runner.Processors;
 using Google.Api;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.OpenApi.Models;
-using Ozon.Route256.Practice;
-using Ozon.Route256.Practice.LogisticsSimulator.Grpc;
-using Ozon.Route256.Practice.OrdersService.ClientBalancing;
-using Ozon.Route256.Practice.OrdersService.ClientBalancing.Interfaces;
+using Microsoft.Extensions.Hosting;
+using Ozon.Route256.Practice.OrdersService.Dal.Common;
 using Ozon.Route256.Practice.OrdersService.GrpcServices;
 using Ozon.Route256.Practice.OrdersService.Infrastructure;
 using Ozon.Route256.Practice.OrdersService.Infrastructure.Kafka.Consumer.PreOrder;
-using Ozon.Route256.Practice.OrdersService.Infrastructure.Redis;
-using Ozon.Route256.Practice.OrdersService.Repository;
-using Ozon.Route256.Practice.OrdersService.Repository.Interfaces;
-using Ozon.Route256.Practice.OrdersService.Repository.Models;
 using System.Net;
-using InMemoryStorage = Ozon.Route256.Practice.OrdersService.Repository.InMemoryStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +29,32 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddHostedService<PreOrderConsumer>();
 
+
+var needMigration = args.Length > 0 && args[0].Equals("migrate");
+if (needMigration)
+{
+    var connectionString = builder.Configuration.GetValue<string>("ORDERS-DB");
+
+    builder.Services.AddFluentMigratorCore()
+    .ConfigureRunner(builder => builder
+        .AddPostgres()
+        .ScanIn(typeof(SqlMigration).Assembly)
+        .For.Migrations()) // TODO: не понятно со строкой подключения
+    .AddOptions<ProcessorOptions>()
+    .Configure(
+        options =>
+        {
+            options.ConnectionString = connectionString;
+            options.Timeout = TimeSpan.FromSeconds(30);
+        });
+
+    using var scope = builder.Services.BuildServiceProvider().CreateScope();
+    var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+
+    runner.MigrateUp();
+
+    return;
+}
 
 var app = builder.Build();
 

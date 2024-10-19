@@ -1,7 +1,4 @@
-﻿using System;
-using Ozon.Route256.Practice.OrdersService.Models;
-
-namespace Ozon.Route256.Practice.OrdersService.Models.Filter;
+﻿namespace Ozon.Route256.Practice.OrdersService.Models.Filter;
 
 public record OrderFilter(
     string[] regions,

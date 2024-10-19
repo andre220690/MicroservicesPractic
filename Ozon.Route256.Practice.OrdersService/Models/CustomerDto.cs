@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ozon.Route256.Practice.OrdersService.Models;
+﻿namespace Ozon.Route256.Practice.OrdersService.Models;
 
 public record CustomerDto(
     int id,

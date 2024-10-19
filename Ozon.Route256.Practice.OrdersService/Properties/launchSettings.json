@@ -9,10 +9,19 @@
         "ROUTE256_CUSTOMER_ADDRESS": "http://localhost:5081",
         "ROUTE256_REDIS": "http://localhost:6380",
         "ROUTE256_GRPC_PORT": "5005",
-        "ROUTE256_HTTP_PORT": "5004"
+        "ROUTE256_HTTP_PORT": "5004",
+        "ORDERS-DB": "Server=localhost;Port=5401;Database=orders-service;User ID=test;Password=test"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5004"
+    },
+    "Ozon.Route256.Practice.OrdersService.Migrator": {
+      "commandName": "Project",
+      "commandLineArgs": "migrate",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ORDERS-DB": "Server=localhost;Port=5401;Database=orders-service;User ID=test;Password=test"
+      }
     }
   }
 }

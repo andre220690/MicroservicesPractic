@@ -1,7 +1,7 @@
-﻿using System.Collections.Concurrent;
-using Ozon.Route256.Practice.OrdersService.Models;
+﻿using Ozon.Route256.Practice.OrdersService.Models;
+using System.Collections.Concurrent;
 
-namespace Ozon.Route256.Practice.OrdersService.Repository;
+namespace Ozon.Route256.Practice.OrdersService.Dal.Repository;
 
 public class InMemoryStorage
 {

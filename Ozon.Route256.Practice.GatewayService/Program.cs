@@ -1,10 +1,7 @@
 using Grpc.Core;
 using Grpc.Net.Client.Balancer;
 using Grpc.Net.Client.Configuration;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Configuration;
 using Ozon.Route256.Practice;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +38,7 @@ builder.Services.AddGrpcClient<Orders.OrdersClient>(options =>
     x.Credentials = ChannelCredentials.Insecure;
     x.ServiceConfig = new ServiceConfig()
     {
-         LoadBalancingConfigs = { new LoadBalancingConfig("round_robin") }
+        LoadBalancingConfigs = { new LoadBalancingConfig("round_robin") }
     };
 });
 builder.Services.AddGrpcClient<Customers.CustomersClient>(options =>

@@ -1,6 +1,6 @@
 ﻿using Ozon.Route256.Practice.OrdersService.Models;
 
-namespace Ozon.Route256.Practice.OrdersService.Repository.Interfaces;
+namespace Ozon.Route256.Practice.OrdersService.Dal.Repository.Interfaces;
 
 public interface ICustomerRepository
 {
